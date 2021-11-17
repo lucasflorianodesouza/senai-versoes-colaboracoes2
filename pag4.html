@@ -2,30 +2,127 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Início</title>
+        <title>login</title>
+        <style> 
+            #msgError {
+                text-align:center;
+                color: red; 
+                background-color: #ffbbbb;
+                padding: 10px;
+                border-radius: 4px;
+                display: none;
+            }
+        h1 {
+          color: rgb(61, 61, 57);
+          text-align: center;
+          font-family: verdana;
+        }
+        p {
+          font-family: verdana;
+          text-align: center;
+          font-size: 20px;
+        }
+        a {
+            font-family: arial;
+            text-align: center;
+        }
+        body {
+            text-align: center;
+            color: rgb(13, 13, 14);
+            background-color: rgb(66, 255, 66);
+        }
+        </style>
+
+<script>
+    let btn = document.querySelector('.fa-eye')
+    
+    btn.addEventListener('click', ()=> {
+        let inputSenha = getSelector('#senha')
+
+        if(inputSenha.getAttribute('type') == 'password'){
+            inputSenha.setAttribute('type', 'text')
+        } else {
+            inputSenha.setAttribute('type', 'password')
+        }
+    })
+
+    function entrar(){
+        let usuario = document.querySelector('#usuario')
+        let userLabel = document.querySelector('#userLabel')
+
+        let senha = document.querySelector('#senha')
+        let senhaLabel = document.querySelector('#senhaLabel')
+
+        let msgError = document.querySelector('#msgError')
+        let listaUser = []
+
+        
+        let userValid = {
+            nome: '',
+            user: '',
+            senha: ''
+        }
+
+        listaUser = JSON.parse(localStorage.getItem('listaUser'))
+
+        listaUser.forEach((item) =>{
+            if(usuario.value == item.userCad && senha.value == item.senhaCad){
+                
+                userValid = {
+                    nome: item.nomeCad,
+                    user: item.userCad,
+                    senha: item.senhaCad
+                }
+            }
+        })
+
+        if(usuario.value == userValid.user && senha.value == userValid.senha){
+            window.location.href= 'pag1.html'
+
+            let token = Math.random().toString(16).substr(2)
+            localStorage.setItem('token', token)
+
+            localStorage.setItem('userLogado', JSON.stringify(userValid))
+        } else {
+            userLabel.setAttribute('style', 'color: red')
+            usuario.setAttribute('style', 'border-color: red')
+            senhaLabel.setAttribute('style', 'color: red')
+            senha.setAttribute('style', 'border-color: red')
+            msgError.setAttribute('style', 'display: block')
+            msgError.innerHTML = 'Usuário ou senha incorretos'
+            usuario.focus()
+        }
+
+    }
+</script>
+        
     </head>
-    <body>
-        <header>
-            <div class="header"></div>
-            <div class="footer"></div>
-            <nav itemid="menu">
-                <a href="pag1.html">Home</a>
-                <a href="pag2.html">notificações</a>
-                <a href="pag3.html">envie email</a>
-                <a href="pag4.html">login</a>
-                <a href="https://www.w3schools.com/">w3schools</a>
-            </nav>
-        </header>
-    </body>
 <body>
     <br>
     <h1>login</h1>
-    <br><br>
-    <label for="email">E-mail:</label>
-    <input type="email" id="email" name="email" maxlength="40" required autocomplete>
-   <br><br>
-    <label for="password-example">senha</label>
-    <input type="password" id="password-example">
-    <br><br>
-    <a href="pag1.html">entrar</a>
+    <div id='msgError'></div>
+
+    <div class='label-float'>
+        <input type='text' id='usuario' paceholder='' required>
+        <label id='userLabel' for='usuario'>usuario</label>
+    </div>
+
+    <div class='label-float'>
+        <input type='password' id='senha' paceholder='' required>
+        <label id='senhaLabel' for='senha'>senha</label>
+        <i class="fa fa-eye" aria-hidden="true"></i>
+    </div>
+
+    <div class='justify-center'>
+        <button onclick='entrar()'>entrar</button>
+    </div>
+
+    <div class='justify-center'>
+
+    </div>
+
+    <p>não tem uma conta?
+    <a href="pag5.html"> cadastre-se </a> 
+    </p>
+   
 </body>
